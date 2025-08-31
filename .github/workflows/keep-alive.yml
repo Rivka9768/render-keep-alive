@@ -2,15 +2,17 @@ name: Keep Render Awake
 
 on:
   schedule:
-    - cron: "*/10 * * * *"   # runs every 10 minutes
-  workflow_dispatch:          # allows manual run
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Curl request to Render site
+      - name: Ping Render site multiple times
         run: |
-          STATUS=$(curl -L -o /dev/null -s -w "%{http_code}\n" https://www.rivkasorscher.com)
-          echo "Site responded with status: $STATUS"
-
+          for i in 1 2 3; do
+            STATUS=$(curl -L -s -o /dev/null -w "%{http_code}" https://www.rivkasorscher.com)
+            echo "$(date) Ping $i: $STATUS"
+            sleep 60
+          done
