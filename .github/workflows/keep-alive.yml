@@ -10,4 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Curl request to Render site
-        run: curl -I https://rivkasorscher.com
+        run: |
+          STATUS=$(curl -L -o /dev/null -s -w "%{http_code}\n" https://www.rivkasorscher.com)
+          echo "Site responded with status: $STATUS"
+
